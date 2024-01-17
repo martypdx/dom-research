@@ -12,11 +12,11 @@ function signal(initial) {
     return { subscribe, add };
 }
 
-function getCountSignal(initial) {    
+function getCountSignal(initial) {
     let value = initial;
     const signal = new Signal();
     const subscribe = signal.subscribe.bind(signal);
-    
+
     const add = incr => {
         value = (value ?? 0) + incr;
         signal.notify(value);
@@ -30,7 +30,7 @@ class Signal extends Set {
         this.forEach(s => s(payload));
     }
     subscribe(s) {
-        this.add(s); 
+        this.add(s);
     }
 }
 
@@ -40,7 +40,7 @@ class ValueSignal {
         this.value = initial;
     }
     subscribe(s) {
-        this.signal.subscribe(s); 
+        this.signal.subscribe(s);
         // for "hot" signal add:
         // s(this.value);
     }
@@ -74,7 +74,7 @@ c2Signal.add(2);
 c2Signal.add(10);
 
 
-async function * store(initial) {
+async function* store(initial) {
     let value = initial;
     const change = newValue => value = newValue;
 
@@ -105,7 +105,9 @@ async function counter(count) {
 }
 
 console.log('operator');
+
 const { increment, decrement } = await counter(5);
+
 console.log(await increment());
 console.log(await increment());
 console.log(await increment());

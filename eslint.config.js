@@ -1,16 +1,49 @@
-import js from '@eslint/js';
 import globals from 'globals';
+import js from '@eslint/js';
+import parser from '@typescript-eslint/parser';
+import typeScriptPlugin from '@typescript-eslint/eslint-plugin';
+import { FlatCompat } from '@eslint/eslintrc';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+// mimic CommonJS variables -- not needed if using CommonJS
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({
+    resolvePluginsRelativeTo: __dirname
+});
+
+const [config, rulesJs, rulesTs] = compat.extends('plugin:@typescript-eslint/strict-type-checked');
 export default [
-    js.configs.recommended,
+    // config,
+    rulesJs,
+    rulesTs,
+    {
+        files: ['**/*.ts'],
+        languageOptions: {
+            parser: config.languageOptions.parser,
+            parserOptions: {
+                project: true,
+                extraFileExtensions: ['.jsz'],
+            },
+        },
+        plugins: {
+            typeScriptPlugin
+        },
+    },
     {
         files: ['**/*.js'],
+        ...js.configs.recommended
+    },
+
+    {
         linterOptions: {
             reportUnusedDisableDirectives: 'warn'
         },
         languageOptions: {
             globals: {
-                ...globals.browser
+                ...globals.browser,
+                ...globals.node,
             },
         },
         rules: {
@@ -98,6 +131,4 @@ export default [
             'array-bracket-spacing': 'error',
             'no-unused-vars': 'off'
         }
-    }
-];
-
+    }];
