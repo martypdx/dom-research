@@ -1,5 +1,5 @@
-import { Bench } from '/node_modules/tinybench/dist/index.js';
 
+import { Bench } from '/node_modules/tinybench/dist/index.js';
 /*
         const code = compile(`const t = <p className={"className"}>
             {"Greeting"} <span>hey {"Azoth"}!</span>
