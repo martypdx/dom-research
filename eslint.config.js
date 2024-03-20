@@ -17,14 +17,13 @@ const [config, rulesJs, rulesTs] = compat.extends('plugin:@typescript-eslint/str
 export default [
     // config,
     rulesJs,
-    rulesTs,
+    // rulesTs,
     {
         files: ['**/*.ts'],
         languageOptions: {
             parser: config.languageOptions.parser,
             parserOptions: {
                 project: true,
-                extraFileExtensions: ['.jsz'],
             },
         },
         plugins: {
@@ -123,6 +122,9 @@ export default [
                             after: false
                         },
                         switch: {
+                            after: false
+                        },
+                        catch: {
                             after: false
                         }
                     }

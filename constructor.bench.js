@@ -1,6 +1,5 @@
 import { Bench } from '/node_modules/tinybench/dist/index.js';
 
-
 const felix = { name: 'felix', lives: 9 };
 class MyClass {
     constructor({ name, lives }) {
@@ -32,16 +31,22 @@ async function create_objects(bench) {
             myFunction(felix);
         })
         .add('new function', () => {
+            // eslint-disable-next-line new-cap
             new myFunction(felix);
         })
         .add('new this function', () => {
+            // eslint-disable-next-line new-cap
             new thisFunction(felix);
         })
+        .add('Reflect.construct', () => {
+            const thi$ = Object.create(null);
+            thisFunction.call(thi$, felix);
+        });
 }
 
 async function doBench(setup) {
-    const bench = new Bench({ time: 5000 });
-    setup(bench)
+    const bench = new Bench({ time: 200 });
+    setup(bench);
     await bench.warmup(); // make results more reliable, ref: https://github.com/tinylibs/tinybench/pull/50
     await bench.run();
 
